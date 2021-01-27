@@ -10,11 +10,17 @@ var sky, mountains, city;
 
 // preload game assets - runs once at start
 function preload() {
-  game.load.spritesheet('dude', 'dude.png', 32, 48); 
-  game.load.image ('city', 'city-skyline.png');
-  game.load.image ('mountains', 'mountain-skyline.png'); 
-  game.load.image('sky', 'sky-clouds.jpg');
-  game.load.image('platform-50')
+  game.load.spritesheet('dude', 'assets/images/dude.png', 32, 48); 
+  game.load.image ('city', 'assets/images/city-skyline.png');
+  game.load.image ('mountains', 'assets/images/mountain-skyline.png'); 
+  game.load.image('sky', 'assets/images/sky-clouds.jpg');
+  game.load.image('platform-50', 'assets/images/platform-050w.png');
+  game.load.image('platform-100', 'assets/images/platform-100w.png');
+  game.load.image('platform-200', 'assets/images/platform-200w.png');
+  game.load.image('platform-300', 'assets/images/platform-300w.png');
+  game.load.image('platform-400', 'assets/images/platform-400w.png');
+  game.load.image('platform-500', 'assets/images/platform-500w.png');
+  
 
 
 }
@@ -42,6 +48,14 @@ function create() {
   //animations
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+  // PLATFORMS
+  platformGroup = game.add.group();
+  platformGroup.enableBody = true;
+
+  // add ground platform
+  var ground = platformGroup.create(0, game.world.height - 25, 'platform-500');
+  ground.scale.setTo(10, 1); // 10 * 500 = 5000 pixels wide
 }
 
 // update gameplay - runs in continuous loop after "create" finished
