@@ -22,6 +22,7 @@ function preload() {
   game.load.image('wall-50', 'assets/images/wall-050h.png');
   game.load.image('wall-150', 'assets/images/wall-150h.png');
   game.load.image('wall-250', 'assets/images/wall-250h.png');
+  game.load.spritesheet('coin', 'assets/images/coin.png', 32, 32, 6);
 }
 
 // create game world - runs once after "preload" finished
@@ -48,6 +49,7 @@ function create() {
   //animations
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
+  //coin.animations.add('spin', [0-5], 10, true);
 
   // PLATFORMS
   platformGroup = game.add.group();
@@ -76,13 +78,42 @@ function create() {
   wallGroup.create(3000, 525, 'wall-50');
   wallGroup.create(4000, 425, 'wall-50');
   wallGroup.setAll('body.immovable', true);
-  
+  //coins
+  coinGroup = game.add.group();
+  coinGroup.enableBody = true;
+  var coinData = [
+        { x:75, y:0 },
+        { x:150, y:0 },
+        { x:250, y:250 },
+        { x:275, y:0 },
+        { x:350, y:0 },
+        { x:450, y:300 },
+        { x:475, y:0 },
+        { x:537, y:0 },
+        { x:650, y:0 },
+        { x:700, y:400 },
+        { x:850, y:0 },
+        { x:950, y:0 },
+        { x:1050, y:0 },
+        { x:1175, y:0 },
+        { x:1375, y:0 }
+        // no comma after last item in array
+  ]; 
+  for (var i = 0; i < coinData.length; i++) {
+    var coin = coinGroup.create(coinData[i].x, coinData[i].y, 'coin');
+    coin.body.gravity.y = 400;
+    coin.body.bounce.y = 0.5;
+    coin.anchor.set(0.5, 0.5);
+    //coin.animations.play('spin');
+  }
 }
 
 // update gameplay - runs in continuous loop after "create" finished
 function update() {
   game.physics.arcade.collide(player, platformGroup);
   game.physics.arcade.collide(player, wallGroup);
+  game.physics.arcade.collide(coinGroup, platformGroup);
+  game.physics.arcade.collide(coinGroup, wallGroup);
   if (arrowKey.left.isDown) {
     player.body.velocity.x = -200;
     player.animations.play('left');
